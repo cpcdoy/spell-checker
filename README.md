@@ -1,6 +1,5 @@
 # spell-checker
-
-## Description
+## Description
 
 This project aims at creating a data-structure that will be used to do efficient spell checking on word.
 
