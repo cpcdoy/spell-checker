@@ -7,13 +7,6 @@
 
 # include "dawg_node.hh"
 
-struct word_data
-{
-  const char* word;
-  unsigned long freq;
-};
-
-
 template<typename key_type, typename data_type>
 class dawg
 {
@@ -22,7 +15,7 @@ class dawg
 
     void insert(std::string word, data_type data);
 
-    void minimize(unsigned long limit);
+    void minimize(long limit);
 
     data_type search(std::string word);
 

@@ -11,8 +11,10 @@ file(GLOB SRC
 )
 
 add_subdirectory(src/dawg)
+add_subdirectory(src/utils)
 add_executable(TextMiningCompiler src/text_mining_compiler.cc
-  $<TARGET_OBJECTS:dawg>)
+  $<TARGET_OBJECTS:dawg>
+  $<TARGET_OBJECTS:utils>)
 
 add_custom_target(deep_clean
   COMMAND find . -iwholename '*cmake*' -not -name CMakeLists.txt -not -name cmake_deps -not -name '*Find*' -delete

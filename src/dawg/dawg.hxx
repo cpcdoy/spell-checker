@@ -14,26 +14,28 @@ void
 dawg<key_type, data_type>::
 insert(std::string word, data_type word_data)
 {
-  if (word <= prev_word)
+  if (word == prev_word || word.size() == 0)
+    return;
+
+  if (word < prev_word)
   {
-    std::cerr << "At comparaison : " << word << " <= " << prev_word << " \n-> Words must be inserted in alphabetical order." << std::endl;
+    std::cerr << "At comparaison : " << word << "(" << word.size() << ") <= " << prev_word << "(" << prev_word.size() << ") \n-> Words must be inserted in alphabetical order." << std::endl;
+    std::exit(0);
     return;
   }
 
   unsigned long common_prefix = 0;
 
-  std::cout << "For: " << word << " " << prev_word << std::endl;
-  for (unsigned long i = 0; i < std::min(word.size(), prev_word.size()); i++)
+  auto word_min_size = std::min(word.size(), prev_word.size());
+
+  for (unsigned long i = 0; i < word_min_size; i++)
   {
-    std::cout << word[i] << " " << prev_word[i] << " " << common_prefix << std::endl;
     if (word[i] != prev_word[i])
       break;
     common_prefix++;
   }
 
-  std::cout << "size : " << unchecked_nodes.size() << std::endl;
   minimize(common_prefix);
-  std::cout << "size : " << unchecked_nodes.size() << std::endl;
 
   data.push_back(word_data);
 
@@ -47,7 +49,6 @@ insert(std::string word, data_type word_data)
   {
     auto next_node = std::make_shared<dawg_node<key_type>>(dawg_node_id++);
     node->add_edge(l, next_node);
-    std::cout << "node id " << l << " " << node->id << std::endl;
     unchecked_nodes.push_back({ node, next_node, l});
     node = next_node;
   }
@@ -59,10 +60,10 @@ insert(std::string word, data_type word_data)
 template<typename key_type, typename data_type>
 void
 dawg<key_type, data_type>::
-minimize(unsigned long limit)
+minimize(long limit)
 {
-  std::cout << "Minimizing " << unchecked_nodes.size() - 1 << " " << limit - 1<<std::endl;
-  for (long i = (long)unchecked_nodes.size() - 1; i < limit - 1; i--)
+  //std::cout << "Minimizing " << unchecked_nodes.size() - 1 << " " << limit - 1 <<std::endl;
+  for (long i = (long)(unchecked_nodes.size() - 1); i > limit - 1; i--)
   {
     unchecked_node& u_node = unchecked_nodes[i];
     auto& parent = u_node.node;
@@ -71,7 +72,8 @@ minimize(unsigned long limit)
     auto child_it = minimized_nodes.find(child);
     auto& child_it_val = *child_it;
 
-    std::cout << "--------------------------- " << parent->id << " " << letter << std::endl;
+    //std::cout << "--------------------------- " << parent->id << " " << letter <<  " " << child->id << std::endl;
+
     if (child_it != minimized_nodes.end())
       parent->get_edges()[letter] = child_it_val.second;
     else
@@ -79,6 +81,7 @@ minimize(unsigned long limit)
 
     unchecked_nodes.pop_back();
   }
+  //std::cout << "End minimizing" << std::endl;
 }
 
 template<typename key_type, typename data_type>
@@ -92,7 +95,6 @@ search(std::string word)
 
   for (auto& l : word)
   {
-    std::cout << l << std::endl;
     if (!node->is_an_edge(l))
     {
       std::cout << "Not found" << std::endl;
@@ -112,16 +114,14 @@ search(std::string word)
       std::cout << "Skipping " << skipped << std::endl;
     }
   }
-  std::cout << "Might be found" << std::endl;
-  if (node->is_final())
-  {
-    std::cout << "Data content" << std::endl;
-    for (int i = 0; i < data.size(); i++)
-      std::cout << i << " " << data[i].word << " | " << std::endl;
-    return data[skipped];
-  }
 
-  std::cout << "Not found at all" << std::endl;
+  std::cout << "Might be found" << std::endl;
+
+  if (node->is_final())
+    return data[skipped];
+
+
+  std::cout << "Not found" << std::endl;
   return data_type();
 }
 
@@ -133,9 +133,11 @@ close()
   minimize(0);
 
   root->get_reacheable_nodes_count();
-  
+
   for (auto it = root->get_edges().begin(); it != root->get_edges().end(); it++)
-    std::cout << "key "  << it->first << std::endl;
+    for (auto it2 = it->second->get_edges().begin(); it2 != it->second->get_edges().end(); it2++)
+    std::cout << "key "  << it2->first << std::endl;
+
 }
 
 

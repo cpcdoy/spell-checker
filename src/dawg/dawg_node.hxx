@@ -2,7 +2,7 @@
 
 template<typename node_type>
 dawg_node<node_type>::
-dawg_node(unsigned long id)
+dawg_node(unsigned long long id)
 {
   this->id = id;
 }
@@ -21,7 +21,6 @@ dawg_node<node_type>::
 add_edge(node_type key, dawg_node_ptr<node_type> value)
 {
   edges.insert(std::make_pair(key, value));
-  std::cout << "Inserting " << key << std::endl;
 }
 
 template<typename node_type>
@@ -41,7 +40,7 @@ get_edges()
 }
 
 template<typename node_type>
-unsigned long
+unsigned long long
 dawg_node<node_type>::
 get_count()
 {
@@ -65,7 +64,7 @@ is_final()
 }
 
 template<typename node_type>
-unsigned long
+unsigned long long
 dawg_node<node_type>::
 get_reacheable_nodes_count()
 {
@@ -77,10 +76,7 @@ get_reacheable_nodes_count()
     count += 1;
 
   for (auto i = edges.begin(); i != edges.end(); i++)
-  {
     count += i->second->get_reacheable_nodes_count();
-    std::cout << "count " << count << std::endl;
-  }
 
   return count;
 }
