@@ -66,3 +66,11 @@ operator>>(word_data& data)
 
   return *this;
 }
+
+template<typename data_type>
+void
+io_handler<data_type>::
+close()
+{
+  file.close();
+}

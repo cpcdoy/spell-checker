@@ -11,28 +11,27 @@ class dawg_node
   template<typename T>
     using dawg_node_ptr = std::shared_ptr<dawg_node<T>>;
 
-    dawg_node(unsigned long long id);
+    dawg_node(unsigned int id);
 
     std::string to_string();
 
-    unsigned long long get_reacheable_nodes_count();
+    unsigned int get_reacheable_nodes_count();
 
     void add_edge(node_type key, dawg_node_ptr<node_type> value);
     bool is_an_edge(node_type node);
     std::/*unordered_*/map<node_type, dawg_node_ptr<node_type>>& get_edges();
 
-    unsigned long long get_count();
+    unsigned int get_count();
 
     void set_final();
     bool is_final();
-
-    unsigned long long id = 0;
-    unsigned long long count = 0;
   private:
+    std::/*unordered_*/map<node_type, dawg_node_ptr<node_type>> edges;
 
     bool final = false;
 
-    std::/*unordered_*/map<node_type, dawg_node_ptr<node_type>> edges;
+    unsigned int id = 0;
+    unsigned int count = 0;
 };
 
 template<typename T>

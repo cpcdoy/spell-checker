@@ -87,17 +87,27 @@ minimize(long limit)
 template<typename key_type, typename data_type>
 data_type
 dawg<key_type, data_type>::
-search(std::string word)
+search(std::string word, unsigned long cost)
 {
   auto node = root;
 
   unsigned long skipped = 0;
 
+  auto columns = words.size() + 1;
+
+  std::vector<std::string> results;
+
+  std::vector<int> prev_row(word.size());
+  std::iota(std::begin(prev_row), std::end(prev_row), 0);
+
+  std::vector<int> curr_row(columns);
+  curr_row[0] = prev_row[0] + 1;
+
   for (auto& l : word)
   {
     if (!node->is_an_edge(l))
     {
-      std::cout << "Not found" << std::endl;
+      //std::cout << "Not found" << std::endl;
       return data_type();
     }
 
@@ -111,17 +121,17 @@ search(std::string word)
         break;
       }
       skipped += e.second->get_count();
-      std::cout << "Skipping " << skipped << std::endl;
+      //std::cout << "Skipping " << skipped << std::endl;
     }
   }
 
-  std::cout << "Might be found" << std::endl;
+  //std::cout << "Might be found" << std::endl;
 
   if (node->is_final())
     return data[skipped];
 
 
-  std::cout << "Not found" << std::endl;
+  //std::cout << "Not found at all :'(" << std::endl;
   return data_type();
 }
 
@@ -134,10 +144,9 @@ close()
 
   root->get_reacheable_nodes_count();
 
-  for (auto it = root->get_edges().begin(); it != root->get_edges().end(); it++)
+  /*for (auto it = root->get_edges().begin(); it != root->get_edges().end(); it++)
     for (auto it2 = it->second->get_edges().begin(); it2 != it->second->get_edges().end(); it2++)
-    std::cout << "key "  << it2->first << std::endl;
-
+    std::cout << "key "  << it2->first << std::endl;*/
 }
 
 

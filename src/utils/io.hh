@@ -11,6 +11,7 @@ class io_handler
     void open_file(std::string path);
     io_handler<data_type>& operator>>(data_type& data);
     bool is_finished();
+    void close();
 
   private:
     std::ifstream file;

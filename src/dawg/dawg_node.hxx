@@ -2,7 +2,7 @@
 
 template<typename node_type>
 dawg_node<node_type>::
-dawg_node(unsigned long long id)
+dawg_node(unsigned int id)
 {
   this->id = id;
 }
@@ -40,7 +40,7 @@ get_edges()
 }
 
 template<typename node_type>
-unsigned long long
+unsigned int
 dawg_node<node_type>::
 get_count()
 {
@@ -64,7 +64,7 @@ is_final()
 }
 
 template<typename node_type>
-unsigned long long
+unsigned int
 dawg_node<node_type>::
 get_reacheable_nodes_count()
 {

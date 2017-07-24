@@ -4,6 +4,7 @@
 # include <algorithm>
 # include <cmath>
 # include <iostream>
+# include <numeric>
 
 # include "dawg_node.hh"
 
@@ -17,7 +18,7 @@ class dawg
 
     void minimize(long limit);
 
-    data_type search(std::string word);
+    data_type search(std::string word, unsigned long cost);
 
     void debug_display();
 
