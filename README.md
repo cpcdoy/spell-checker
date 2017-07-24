@@ -10,10 +10,13 @@ This project is using the CMake build system.
 ### In-Source build
 
 `cmake .`
+
 `make`
 
 ### Out-of-source build
 
 `mkdir build && cd build`
+
 `cmake .`
+
 `make`
