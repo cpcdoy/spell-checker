@@ -61,6 +61,32 @@ insert(std::string word, data_type word_data)
 template<typename key_type, typename data_type>
 void
 dawg<key_type, data_type>::
+minimize2(long limit)
+{
+  //std::cout << "Minimizing " << unchecked_nodes.size() - 1 << " " << limit - 1 <<std::endl;
+  for (long i = (long)(unchecked_nodes.size() - 1); i > limit - 1; i--)
+  {
+    unchecked_node& u_node = unchecked_nodes[i];
+    auto& parent = u_node.node;
+    auto& letter = u_node.letter;
+    auto& child = u_node.next_node;
+    auto child_it = minimized_nodes.find(child);
+    auto& child_it_val = *child_it;
+
+    //std::cout << "--------------------------- " << parent->id << " " << letter <<  " " << child->id << std::endl;
+
+    if (child_it != minimized_nodes.end())
+      parent->get_edges()[letter] = child_it_val.second;
+    else
+      minimized_nodes[child] = child;
+
+    unchecked_nodes.pop_back();
+  }
+  //std::cout << "End minimizing" << std::endl;
+}
+template<typename key_type, typename data_type>
+void
+dawg<key_type, data_type>::
 minimize(long limit)
 {
   //std::cout << "Minimizing " << unchecked_nodes.size() - 1 << " " << limit - 1 <<std::endl;

@@ -17,6 +17,8 @@ class dawg
     void insert(std::string word, data_type data);
 
     void minimize(long limit);
+    
+    void minimize2(long limit);
 
     data_type search(std::string word, unsigned long cost);
 
@@ -40,6 +42,8 @@ class dawg
     std::vector<unchecked_node> unchecked_nodes;
 
     std::map<dawg_node_ptr<key_type>, dawg_node_ptr<key_type>> minimized_nodes;//not hunderstood
+    
+    std::map<char , dawg_node_ptr<key_type>> minimized_nodes2;//not hunderstood
 
     std::vector<data_type> data;
 };
