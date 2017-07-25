@@ -40,7 +40,8 @@ insert(std::string word, data_type word_data)
   data.push_back(word_data);
 
   dawg_node_ptr<key_type> node;
-  if (!unchecked_nodes.size())
+  
+  if (!unchecked_nodes.size()) //not hunderstood
     node = root;
   else
     node = unchecked_nodes.back().next_node;
@@ -48,15 +49,15 @@ insert(std::string word, data_type word_data)
   for (auto& l : word.substr(common_prefix))
   {
     auto next_node = std::make_shared<dawg_node<key_type>>(dawg_node_id++);
+    next_node->set_depth(node); /*added*/
     node->add_edge(l, next_node);
-    unchecked_nodes.push_back({ node, next_node, l});
+    unchecked_nodes.push_back({node, next_node, l});
     node = next_node;
   }
 
   node->set_final();
   prev_word = word;
 }
-
 template<typename key_type, typename data_type>
 void
 dawg<key_type, data_type>::
@@ -93,7 +94,7 @@ search(std::string word, unsigned long cost)
 
   unsigned long skipped = 0;
 
-  auto columns = words.size() + 1;
+  auto columns = word.size() + 1;
 
   std::vector<std::string> results;
 

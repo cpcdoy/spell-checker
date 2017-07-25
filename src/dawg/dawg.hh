@@ -39,7 +39,7 @@ class dawg
     };
     std::vector<unchecked_node> unchecked_nodes;
 
-    std::map<dawg_node_ptr<key_type>, dawg_node_ptr<key_type>> minimized_nodes;
+    std::map<dawg_node_ptr<key_type>, dawg_node_ptr<key_type>> minimized_nodes;//not hunderstood
 
     std::vector<data_type> data;
 };

@@ -54,7 +54,21 @@ set_final()
 {
   final = true;
 }
-
+template<typename node_type>
+template<typename T>
+inline void
+dawg_node<node_type>::
+set_depth(dawg_node_ptr<T> parent)
+{
+  depth = parent->get_depth() + 1; /*added*/
+}
+template<typename node_type>
+unsigned int
+dawg_node<node_type>::
+get_depth()
+{
+  return depth; /*added*/
+}
 template<typename node_type>
 inline bool
 dawg_node<node_type>::
