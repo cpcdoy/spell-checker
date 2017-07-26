@@ -17,7 +17,8 @@ class trie
     data_type search(std::string word);
     void close();
   private:
-    std::map<key_type, trie_node_ptr<key_type>> childs_;
+    trie_node_ptr<key_type> root_;
+    //std::map<key_type, trie_node_ptr<key_type>> childs_;
     std::map<unsigned int, data_type> words_datatypes; //unsigned int will be the id of the node
     unsigned int depth_;
     unsigned int count_;

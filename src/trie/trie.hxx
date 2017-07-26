@@ -1,34 +1,50 @@
 #include "trie.hh"
+#include <fstream>
 template<typename key_type, typename data_type>
 trie<key_type, data_type>::
 trie(unsigned depth)
 {
   this->depth_ = depth;
   this->count_ = 0;
+  this->root_ = std::make_shared<trie_node<key_type>>(0);
 }
 template<typename key_type, typename data_type>
 void
 trie<key_type, data_type>::
 insert(std::string word, data_type data)
 {
- // auto sp = std::make_shared<int>(12); 
-  auto sp =  std::make_shared<  std::map<key_type, trie_node_ptr<key_type>>>(this->childs_);
+  // auto sp = std::make_shared<int>(12); 
+  //auto sp =  std::make_shared<trie_node<key_type>>(*this->root_);
+  auto sp =  this->root_;
   unsigned int cmp = 0;
-  while((cmp < word.size() - 1) && (cmp < this->depth))
+  while((cmp < word.size() - 1) && (cmp < this->depth_))
   {
-    typename std::map<key_type, trie_node_ptr<key_type>>::const_iterator it = sp->find(word[cmp]);
-    if (it == this->childs_.end())
+    char a = word[cmp];
+    typename std::map<key_type, trie_node_ptr<key_type>>::iterator it = sp->get_childs().find(a);
+    /*FIXME*/
+    /*pb1 when i call the method .find('char a') on the map sp->get_childs() 
+     * for a char that i have never added it doesnt return map sp->get_childs().end()
+     * pb2 when i use sp->get_childs().count(key) it work the first time
+     * then it segfault, the childs_ are initialized, i dont know where is the problem
+     * */
+    if (!sp->get_childs().count(a))
+    //if (it == sp->get_childs().end())
     {
-    (*sp).insert(std::pair<key_type, trie_node_ptr<key_type>>(word[cmp], ++this->count));
-    //sp = (*sp)[word[cmp]].get_childs()
-    //this->count ++;
+      std::cout << "hello\n";
+      sp->get_childs().insert(std::pair<key_type, trie_node_ptr<key_type>>(a ,std::make_shared<trie_node<key_type>>(++this->count_)));
     }
+    sp = sp->get_childs()[a];
     cmp++;
   }
-  /*
-  if (cmp == depth - 1)
-    (*sp).segond->set_final_node(true);
-    instansiate data_type then puch_back trie with the node id  
-    */
-  //else traitement io
+  if (cmp < this->depth_)
+  {
+    sp->set_final_node(true);
+  }
+  else
+  {
+    std::ofstream dict;
+    dict.open ("dic/" + std::to_string(sp->get_id()), std::ofstream::out | std::ofstream::app);
+    dict << word.substr(cmp -1 ) << std::endl; //have to write data_type instead of word
+    dict.close();
+  }
 }
