@@ -40,7 +40,8 @@ insert(std::string word, data_type word_data)
   data.push_back(word_data);
 
   dawg_node_ptr<key_type> node;
-  if (!unchecked_nodes.size())
+  
+  if (!unchecked_nodes.size()) //not hunderstood
     node = root;
   else
     node = unchecked_nodes.back().next_node;
@@ -48,16 +49,41 @@ insert(std::string word, data_type word_data)
   for (auto& l : word.substr(common_prefix))
   {
     auto next_node = std::make_shared<dawg_node<key_type>>(dawg_node_id++);
-    next_node->letter = l;
+    next_node->set_depth(node); /*added*/
     node->add_edge(l, next_node);
-    unchecked_nodes.push_back({ node, next_node, l});
+    unchecked_nodes.push_back({node, next_node, l});
     node = next_node;
   }
 
   node->set_final();
   prev_word = word;
 }
+template<typename key_type, typename data_type>
+void
+dawg<key_type, data_type>::
+minimize2(long limit)
+{
+  //std::cout << "Minimizing " << unchecked_nodes.size() - 1 << " " << limit - 1 <<std::endl;
+  for (long i = (long)(unchecked_nodes.size() - 1); i > limit - 1; i--)
+  {
+    unchecked_node& u_node = unchecked_nodes[i];
+    auto& parent = u_node.node;
+    auto& letter = u_node.letter;
+    auto& child = u_node.next_node;
+    auto child_it = minimized_nodes.find(child);
+    auto& child_it_val = *child_it;
 
+    //std::cout << "--------------------------- " << parent->id << " " << letter <<  " " << child->id << std::endl;
+
+    if (child_it != minimized_nodes.end())
+      parent->get_edges()[letter] = child_it_val.second;
+    else
+      minimized_nodes[child] = child;
+
+    unchecked_nodes.pop_back();
+  }
+  //std::cout << "End minimizing" << std::endl;
+}
 template<typename key_type, typename data_type>
 void
 dawg<key_type, data_type>::

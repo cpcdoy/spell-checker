@@ -9,11 +9,15 @@ This project is using the CMake build system.
 
 ### In-Source build
 
-`cmake .`
-`make`
+```sh
+cmake .
+make
+```
 
 ### Out-of-source build
 
-`mkdir build && cd build`
-`cmake .`
-`make`
+```sh
+mkdir build && cd build
+cmake .
+make
+```
