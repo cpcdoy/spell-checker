@@ -25,6 +25,7 @@ class dawg_node
 
     void set_final();
     bool is_final();
+    node_type letter;
   private:
     std::/*unordered_*/map<node_type, dawg_node_ptr<node_type>> edges;
 

@@ -4,10 +4,6 @@
 
 int main(int argc, char** argv)
 {
-  /*dawg_node<char> node(0);
-  std::vector<std::pair<char, dawg_node<char>>> v;
-  std::cout << sizeof(v) << std::endl;
-  std::exit(0);*/
   dawg<char, word_data> dawg;
   io_handler<word_data> io;
   io.open_file(argv[2]);

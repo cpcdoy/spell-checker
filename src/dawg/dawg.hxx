@@ -48,6 +48,7 @@ insert(std::string word, data_type word_data)
   for (auto& l : word.substr(common_prefix))
   {
     auto next_node = std::make_shared<dawg_node<key_type>>(dawg_node_id++);
+    next_node->letter = l;
     node->add_edge(l, next_node);
     unchecked_nodes.push_back({ node, next_node, l});
     node = next_node;
@@ -70,6 +71,19 @@ minimize(long limit)
     auto& letter = u_node.letter;
     auto& child = u_node.next_node;
     auto child_it = minimized_nodes.find(child);
+    /*std::cout << prev_word << " For letter " << letter << std::endl;
+    typename std::map<dawg_node_ptr<key_type>, dawg_node_ptr<key_type>>::iterator child_it;
+    for (child_it = minimized_nodes.begin(); child_it != minimized_nodes.end(); child_it++)
+    {
+      std::cout << child_it->first->letter << " ";
+      if (child_it->first->letter == letter)
+      {
+        std::cout << "letter is present" << std::endl;
+        break;
+      }
+    }
+    std::cout << std::endl << "---------" << std::endl;*/
+
     auto& child_it_val = *child_it;
 
     //std::cout << "--------------------------- " << parent->id << " " << letter <<  " " << child->id << std::endl;
@@ -93,7 +107,7 @@ search(std::string word, unsigned long cost)
 
   unsigned long skipped = 0;
 
-  auto columns = words.size() + 1;
+  auto columns = word.size() + 1;
 
   std::vector<std::string> results;
 
