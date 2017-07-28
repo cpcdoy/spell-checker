@@ -15,6 +15,7 @@ class trie
     trie(unsigned int depth);
     void insert(std::string word, data_type data);
     data_type search(std::string word);
+    unsigned int lev_dam_dist(std::string s1,  std::string s2);
     void close();
   private:
     trie_node_ptr<key_type> root_;
