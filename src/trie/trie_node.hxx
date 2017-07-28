@@ -26,3 +26,9 @@ trie_node<key_type>::set_final_node(bool val)
   this->final_node_ = val;
 }
 
+template<typename key_type>
+bool
+trie_node<key_type>::get_final_node()
+{
+ return this->final_node_ ;
+}

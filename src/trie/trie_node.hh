@@ -14,6 +14,7 @@ class trie_node
     trie_node(unsigned int id);
     std::map<key_type, trie_node_ptr<key_type>>& get_childs();
     void set_final_node(bool val);
+    bool  get_final_node();
   private:
     unsigned int id_;
     std::map<key_type, trie_node_ptr<key_type>> childs_;
