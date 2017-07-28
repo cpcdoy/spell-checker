@@ -12,13 +12,13 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -ggdb3")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -pedantic -march=native -Ofast -frename-registers -funroll-loops -flto -pg")
 
 file(GLOB SRC
-  "src/text_mining_compiler.cc"
+  "src/test_trie.cc"
 )
 
-add_subdirectory(src/dawg)
+add_subdirectory(src/trie)
 add_subdirectory(src/utils)
-add_executable(TextMiningCompiler src/text_mining_compiler.cc
-  $<TARGET_OBJECTS:dawg>
+add_executable(TextMiningCompiler src/test_trie.cc
+  $<TARGET_OBJECTS:trie>
   $<TARGET_OBJECTS:utils>)
 
 add_custom_target(deep_clean
