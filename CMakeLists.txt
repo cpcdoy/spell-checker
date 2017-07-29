@@ -9,7 +9,7 @@ set(CMAKE_CXX_ARCHIVE_FINISH   true)
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -ggdb3")
 #-fprofile-generate and -fprofile-use
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -pedantic -march=native -Ofast -frename-registers -funroll-loops -flto -pg")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -pedantic -march=native -Ofast -fprofile-generate -frename-registers -funroll-loops -flto -pg")
 
 file(GLOB SRC
   "src/test_trie.cc"
@@ -23,7 +23,6 @@ add_executable(TextMiningCompiler_pass1 src/test_trie.cc
 
 IF(CMAKE_BUILD_TYPE MATCHES Release)
    message("Release mode")
-   set_target_properties(TextMiningCompiler_pass1 PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-generate")
 
   add_executable(TextMiningCompiler src/test_trie.cc
     $<TARGET_OBJECTS:trie>
