@@ -17,12 +17,13 @@ file(GLOB SRC
 
 add_subdirectory(src/trie)
 add_subdirectory(src/utils)
-add_executable(TextMiningCompiler_pass1 src/test_trie.cc
-  $<TARGET_OBJECTS:trie>
-  $<TARGET_OBJECTS:utils>)
 
 IF(CMAKE_BUILD_TYPE MATCHES Release)
    message("Release mode")
+
+  add_executable(TextMiningCompiler_pass1 src/test_trie.cc
+     $<TARGET_OBJECTS:trie>
+     $<TARGET_OBJECTS:utils>)
 
   add_executable(TextMiningCompiler src/test_trie.cc
     $<TARGET_OBJECTS:trie>
@@ -38,6 +39,13 @@ IF(CMAKE_BUILD_TYPE MATCHES Release)
   add_dependencies(TextMiningCompiler TextMiningCompiler_pass2)
 
 ENDIF(CMAKE_BUILD_TYPE MATCHES Release)
+
+IF(CMAKE_BUILD_TYPE MATCHES Debug)
+  message("Debug mode")
+  add_executable(TextMiningCompiler src/test_trie.cc
+     $<TARGET_OBJECTS:trie>
+     $<TARGET_OBJECTS:utils>)
+ ENDIF(CMAKE_BUILD_TYPE MATCHES Debug)
 
 add_custom_target(deep_clean
   COMMAND find . -iwholename '*cmake*' -not -name CMakeLists.txt -not -name cmake_deps -not -name '*Find*' -delete
