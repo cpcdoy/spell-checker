@@ -5,8 +5,10 @@
 # include <cmath>
 # include <iostream>
 # include <numeric>
+# include <sys/stat.h>
 
 # include "trie_node.hh"
+
 template<typename key_type, typename data_type>
 class trie
 {

@@ -2,6 +2,7 @@
 #include <fstream>
 #include "../types/types.hh"
 #include "../utils/io.hh"
+
 template<typename key_type, typename data_type>
 trie<key_type, data_type>::
 trie(unsigned depth)
@@ -9,6 +10,10 @@ trie(unsigned depth)
   this->depth_ = depth;
   this->count_ = 0;
   this->root_ = std::make_shared<trie_node<key_type>>(0);
+
+  const int dir_err = mkdir("dic", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+  if (-1 == dir_err)
+    std::cerr << "Error creating directory!" << std::endl;
 
   //this->words_datatypes.insert(std::pair<unsigned int, data_type>(a ,std::make_shared<trie_node<char>>(++this->count_)));
 }
@@ -163,7 +168,7 @@ insert(std::string word, word_data data)
   else
   {
     std::ofstream dict;
-    dict.open ("dic/" + std::to_string(sp->get_id()), std::ofstream::out | std::ofstream::app);
+    dict.open ("dic/" + std::to_string(sp->get_id()), std::ofstream::out | std::ofstream::app | std::ofstream::trunc);
     dict << word.substr(cmp  )  << " " <<  data.freq << std::endl; //have to write data_type instead of word
     dict.close();
   }

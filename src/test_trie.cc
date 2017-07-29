@@ -4,6 +4,7 @@
 #include "../src/utils/io.hh"
 #include <iostream>
 #include <typeinfo>
+
 int main(int argc, char** argv)
 {
   trie<char, word_data> trie(4);
