@@ -168,7 +168,7 @@ insert(std::string word, word_data data)
   else
   {
     std::ofstream dict;
-    dict.open ("dic/" + std::to_string(sp->get_id()), std::ofstream::out | std::ofstream::app | std::ofstream::trunc);
+    dict.open ("dic/" + std::to_string(sp->get_id()), std::ofstream::out | std::ofstream::app);
     dict << word.substr(cmp  )  << " " <<  data.freq << std::endl; //have to write data_type instead of word
     dict.close();
   }

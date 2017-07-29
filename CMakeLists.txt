@@ -31,7 +31,7 @@ IF(CMAKE_BUILD_TYPE MATCHES Release)
   set_target_properties(TextMiningCompiler PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS}  -fprofile-use")
 
   add_custom_target(TextMiningCompiler_pass2
-    COMMAND TextMiningCompiler_pass1 "subject/words.txt"
+    COMMAND time ./TextMiningCompiler_pass1 "subject/words.txt"
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMENT "Profiling the TextMiningCompiler"
   )

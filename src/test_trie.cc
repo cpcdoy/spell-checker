@@ -17,11 +17,9 @@ int main(int argc, char** argv)
     io >> line;
     trie.insert(line.word, line);
   }
-  trie.search("chadi");
-  //word_data a =  {"hhh", 1};
+  auto res = trie.search("chadi");
 
-  //  auto res = dawg.search(argv[1], 0);
-  // std::cout << "Result : " << res.word << " with freq " << res.freq;
+  std::cout << "Result : " << res.word << " with freq " << res.freq;
 
   return 0;
 }
