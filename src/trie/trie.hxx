@@ -13,6 +13,14 @@ trie(unsigned depth)
   //this->words_datatypes.insert(std::pair<unsigned int, data_type>(a ,std::make_shared<trie_node<char>>(++this->count_)));
 }
 template<typename key_type, typename data_type>
+trie_node_ptr<key_type>
+trie<key_type, data_type>::
+get_root()
+{
+  return this->root_;
+}
+
+template<typename key_type, typename data_type>
 data_type
 trie<key_type, data_type>::
 search(std::string word)
@@ -27,8 +35,6 @@ search(std::string word)
 {
   int cmp = 0;
   auto sp = this->root_;
-  //std::cout << sp->get_childs()['a'] << std::endl;
-  // std::cout << sp->get_childs().count(word[cmp]) << std::endl;
   while ((cmp < this->depth_) && (cmp < word.size()))
   {
     if (sp->get_childs().count(word[cmp]))
@@ -40,7 +46,6 @@ search(std::string word)
   if (cmp < this->depth_) 
     if ((sp->get_final_node() == true) && (cmp == word.size() - 1))
     {
-      std::cout <<  "word found : "<<  words_datatypes[sp->get_id()].word << words_datatypes[sp->get_id()].freq <<std::endl ; 
       return this->words_datatypes[sp->get_id()];
     }
     else
@@ -56,13 +61,71 @@ search(std::string word)
       if (word.substr(cmp) == line.word)
       {
         line.word = word;
-        std::cout <<  "word found : "<<  word << " " << line.freq << std::endl ; 
         return line;
       }
     }
     return {"not found", 0};
   }
 
+}
+template<typename key_type, typename data_type>
+std::vector<data_type> & 
+trie<key_type, data_type>::
+search_dist(int dist, std::vector<data_type> &v, trie_node_ptr<key_type> cur_node,std::string word, std::string tmp)
+{
+  return std::vector<data_type>();
+}
+template<>
+std::vector<word_data> &
+trie<char, word_data>::
+search_dist(int dist, std::vector<word_data> &v,trie_node_ptr<char> cur_node,std::string word, std::string tmp)
+{
+  //stille have to handle case when the word is tooo big for the trie
+  if (dist == 0)
+  {
+    word_data d = search(word);
+    if (d.freq)
+      v.push_back(d);
+    return v;
+  }
+  /*
+     if ((tmp.size() < this->depth_) && ((cur_node->get_childs().empty()) 
+     || ((lev_dam_dist(tmp, word) > dist) 
+     && (std::abs(int (tmp.size() - word.size())) > word.size()))))
+     {
+     if ((cur_node->get_final_node()) && (lev_dam_dist(this->words_datatypes[cur_node->get_id()].word, word) <= dist))
+     v.push_back(this->words_datatypes[cur_node->get_id()]);
+     return v;
+     }*/
+  if (tmp.size() < this->depth_)
+  {
+    if ((cur_node->get_final_node()) && (lev_dam_dist(this->words_datatypes[cur_node->get_id()].word, word) <= dist))
+      v.push_back(this->words_datatypes[cur_node->get_id()]);
+    if (!cur_node->get_childs().empty())
+      for(std::map<char, trie_node_ptr<char>>::iterator iter = cur_node->get_childs().begin(); iter != cur_node->get_childs().end(); ++iter)
+      {
+        char a = iter->first;
+        std::string tmp2(tmp + a);
+        search_dist(dist, v, cur_node->get_childs()[a], word, tmp2);
+      }
+    return v;
+  }
+  else
+  {
+    io_handler<word_data> io;
+    io.open_file("dic/" + std::to_string(cur_node->get_id()));
+    while (!io.is_finished())
+    {
+      word_data line;
+      io >> line;
+      if ((lev_dam_dist(tmp + line.word, word) <= dist) && (line.freq > 0))
+      {
+        v.push_back({tmp + line.word, line.freq});
+      }
+      //i could add else break if i was sure that the words are in order
+    }
+    return v;
+  }
 }
 template<typename key_type, typename data_type>
 void
@@ -77,8 +140,6 @@ insert(std::string word, word_data data)
 {
   if (!word.size())
     return;
-  // auto sp = std::make_shared<int>(12); 
-  //auto sp =  std::make_shared<trie_node<key_type>>(*this->root_);
   auto sp =  this->root_;
   unsigned int cmp = 0;
 

@@ -11,12 +11,20 @@ template<typename key_type, typename data_type>
 class trie
 {
   public:
-   // using map_key_node = std::shared_ptr<trie_node<T>>;
+    // using map_key_node = std::shared_ptr<trie_node<T>>;
     trie(unsigned int depth);
-    void insert(std::string word, data_type data);
-    data_type search(std::string word);
-    unsigned int lev_dam_dist(std::string s1,  std::string s2);
-    void close();
+    void 
+      insert(std::string word, data_type data);
+    data_type 
+      search(std::string word);
+    std::vector<data_type> & 
+      search_dist(int dist, std::vector<data_type> &v, trie_node_ptr<key_type> cur_node,std::string word, std::string tmp = "");
+    unsigned int 
+      lev_dam_dist(std::string s1,  std::string s2);
+    void 
+      close();
+    trie_node_ptr<key_type>
+      get_root();
   private:
     trie_node_ptr<key_type> root_;
     //std::map<key_type, trie_node_ptr<key_type>> childs_;
