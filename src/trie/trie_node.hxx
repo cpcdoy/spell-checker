@@ -1,12 +1,19 @@
 #include "trie_node.hh"
 template<typename key_type>
 trie_node<key_type>::
+trie_node()
+{
+}
+
+template<typename key_type>
+trie_node<key_type>::
 trie_node(unsigned int id)
 {
   this->id_ = id;
   this->final_node_ = false;
   this->childs_ = std::map<key_type, trie_node_ptr<key_type>>();
 }
+
 template<typename key_type>
 unsigned int 
 trie_node<key_type>::get_id()
