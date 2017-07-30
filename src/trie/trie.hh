@@ -14,7 +14,7 @@ class trie
 {
   public:
     // using map_key_node = std::shared_ptr<trie_node<T>>;
-    trie(unsigned int depth);
+    trie(unsigned int depth, std::string dic = "dic");
 
     void 
       insert(std::string word, data_type data);

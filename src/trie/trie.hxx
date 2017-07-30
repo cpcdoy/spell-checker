@@ -5,15 +5,18 @@
 
 template<typename key_type, typename data_type>
 trie<key_type, data_type>::
-trie(unsigned depth)
+trie(unsigned depth, std::string dic)
 {
   this->depth_ = depth;
   this->count_ = 0;
   this->root_ = std::make_shared<trie_node<key_type>>(0);
 
-  const int dir_err = mkdir("dic", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+  const int dir_err = mkdir(dic.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
   if (-1 == dir_err)
-    std::cerr << "Error creating directory!" << std::endl;
+  {
+    std::string arg("rm -rf" + dic);
+    std::system(arg.c_str());
+  }   //std::cerr << "Error creating directory!" << std::endl;
 
   //this->words_datatypes.insert(std::pair<unsigned int, data_type>(a ,std::make_shared<trie_node<char>>(++this->count_)));
 }
