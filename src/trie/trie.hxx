@@ -74,23 +74,26 @@ search(std::string word)
 
 }
 template<typename key_type, typename data_type>
-std::vector<data_type> & 
+template<typename T>
+std::vector<T> & 
 trie<key_type, data_type>::
-search_dist(int dist, std::vector<data_type> &v, trie_node_ptr<key_type> cur_node,std::string word, std::string tmp)
+search_dist(int dist, std::vector<T> &v, trie_node_ptr<key_type> cur_node,std::string word, std::string tmp)
 {
-  return std::vector<data_type>();
+  return std::vector<T>();
 }
 template<>
-std::vector<word_data> &
+template<>
+std::vector<res_data> &
 trie<char, word_data>::
-search_dist(int dist, std::vector<word_data> &v,trie_node_ptr<char> cur_node,std::string word, std::string tmp)
+search_dist(int dist, std::vector<res_data> &v,trie_node_ptr<char> cur_node,std::string word, std::string tmp)
 {
   //stille have to handle case when the word is tooo big for the trie
+  size_t cal_dis = 0;
   if (dist == 0)
   {
     word_data d = search(word);
     if (d.freq)
-      v.push_back(d);
+      v.push_back({d, 0});
     return v;
   }
   /*
@@ -104,7 +107,7 @@ search_dist(int dist, std::vector<word_data> &v,trie_node_ptr<char> cur_node,std
      }*/
   if (tmp.size() < this->depth_)
   {
-    if ((cur_node->get_final_node()) && (lev_dam_dist(this->words_datatypes[cur_node->get_id()].word, word) <= dist))
+    if ((cur_node->get_final_node()) && ((cal_dis = lev_dam_dist(this->words_datatypes[cur_node->get_id()].word, word)) <= dist))
       v.push_back(this->words_datatypes[cur_node->get_id()]);
     if (!cur_node->get_childs().empty())
       for(std::map<char, trie_node_ptr<char>>::iterator iter = cur_node->get_childs().begin(); iter != cur_node->get_childs().end(); ++iter)
@@ -123,9 +126,9 @@ search_dist(int dist, std::vector<word_data> &v,trie_node_ptr<char> cur_node,std
     {
       word_data line;
       io >> line;
-      if ((lev_dam_dist(tmp + line.word, word) <= dist) && (line.freq > 0))
+      if ((cal_dis =lev_dam_dist(tmp + line.word, word)) <= dist) && (line.freq > 0))
       {
-        v.push_back({tmp + line.word, line.freq});
+        v.push_back({cal_dis, {tmp + line.word, line.freq}});
       }
       //i could add else break if i was sure that the words are in order
     }
