@@ -1,6 +1,17 @@
 cmake_minimum_required(VERSION 2.8)
 project(spell-checker)
 
+#set(Boost_USE_STATIC_LIBS OFF) 
+#set(Boost_USE_MULTITHREADED ON)  
+#set(Boost_USE_STATIC_RUNTIME OFF) 
+#find_package(Boost 1.58.0 COMPONENTS system serialize)
+#
+#if(Boost_FOUND)
+#  include_directories(${Boost_INCLUDE_DIRS}) 
+#else(Boost_FOUND)
+#  message(FATAL_ERROR "Boost not found")
+#endif(Boost_FOUND)
+
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -std=c++14 ")
 
 set(CMAKE_AR  "gcc-ar")

@@ -81,6 +81,23 @@ search_dist(int dist, std::vector<T> &v, trie_node_ptr<key_type> cur_node,std::s
 {
   return std::vector<T>();
 }
+
+template<typename key_type, typename data_type>
+bool
+trie<key_type, data_type>::
+sort_res_data(const res_data& lhs, const res_data& rhs)
+{
+  if (lhs.dist != rhs.dist)
+    return lhs.dist < rhs.dist;
+
+  else if (lhs.data.freq != rhs.data.freq)
+    return lhs.data.freq > rhs.data.freq;
+
+  else if (lhs.data.word != rhs.data.word)
+    return lhs.data.word < rhs.data.word;
+}
+
+
 template<>
 template<>
 std::vector<res_data> &
