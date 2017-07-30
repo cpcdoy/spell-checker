@@ -30,7 +30,8 @@ class trie
       search_dist(int dist, std::vector<T> &v, trie_node_ptr<key_type> cur_node,std::string word, std::string tmp = "");
     unsigned int 
       lev_dam_dist(std::string s1,  std::string s2);
-
+    void 
+      print(std::ostream& out, std::vector<res_data> &v);
     trie_node_ptr<key_type>
       get_root();
     static bool sort_res_data(const res_data& lhs, const res_data& rhs);

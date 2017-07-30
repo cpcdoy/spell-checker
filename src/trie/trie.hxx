@@ -11,14 +11,16 @@ trie(unsigned depth, std::string dic)
   this->count_ = 0;
   this->root_ = std::make_shared<trie_node<key_type>>(0);
 
+  std::string arg("rm -rf " + dic);
+  std::system(arg.c_str());
   const int dir_err = mkdir(dic.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-  if (-1 == dir_err)
+  /*if (-1 == dir_err)
   {
-    std::string arg("rm -rf " + dic);
+    std::rmdir(dic);
     std::system(arg.c_str());
     std::cerr << "Error creating directory!" << std::endl;
 
-  }  
+  } */ 
 
   //this->words_datatypes.insert(std::pair<unsigned int, data_type>(a ,std::make_shared<trie_node<char>>(++this->count_)));
 }
@@ -29,7 +31,16 @@ get_root()
 {
   return this->root_;
 }
-
+template<typename key_type, typename data_type>
+void
+trie<key_type, data_type>::
+print(std::ostream& out, std::vector<res_data> &v)
+{
+  out <<"[";
+  for (auto it = v.begin() ; it != v.end(); ++it)
+    out<<"{\"word\":" << it->data.word << ",\"freq\":"<<it->data.freq << ",\"distance\":"<<it->dist<<"}";
+  out <<"]" <<std::endl;
+}
 template<typename key_type, typename data_type>
 data_type
 trie<key_type, data_type>::
