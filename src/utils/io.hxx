@@ -16,18 +16,7 @@ is_finished()
   return file.eof();
 }
 
-template<>
-template<>
-io_handler<word_data>& 
-io_handler<word_data>:: 
-operator<<(const std::vector<res_data> &v)
-{
-  std::cout <<"[";
-  for (auto it = v.begin() ; it != v.end(); ++it)
-    std::cout << "\"word\":\"" <<  it->data.word << "\",\"freq:\""<< it->data.freq  <<"\",\"distance:\"" << it->dist << <<std::endl;
-  std::cout <<"]";
-  return *this;
-}
+
 template<typename data_type>
 io_handler<data_type>&
 io_handler<data_type>::
