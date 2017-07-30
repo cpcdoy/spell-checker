@@ -29,8 +29,8 @@ class trie
 
     trie_node_ptr<key_type>
       get_root();
-  private:
     static bool sort_res_data(const res_data& lhs, const res_data& rhs);
+  private:
 
     trie_node_ptr<key_type> root_;
     //std::map<key_type, trie_node_ptr<key_type>> childs_;

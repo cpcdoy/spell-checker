@@ -46,7 +46,9 @@ int main(int argc, char** argv)
     trie.insert(line.word, line);
   }
   std::vector<word_data>  vv;
+  std::cout << "hello" <<std::endl; 
   std::vector<word_data>  v =  trie.search_dist(10, vv,trie.get_root(), "aa");
+  std::sort(v.begin(), v.end(), sort_res_data); 
   for (auto it = v.begin() ; it != v.end(); ++it)
     std::cout << it->word <<std::endl;
   return 0;

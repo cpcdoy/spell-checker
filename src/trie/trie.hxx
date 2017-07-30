@@ -14,9 +14,11 @@ trie(unsigned depth, std::string dic)
   const int dir_err = mkdir(dic.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
   if (-1 == dir_err)
   {
-    std::string arg("rm -rf" + dic);
+    std::string arg("rm -rf " + dic);
     std::system(arg.c_str());
-  }   //std::cerr << "Error creating directory!" << std::endl;
+    std::cerr << "Error creating directory!" << std::endl;
+
+  }  
 
   //this->words_datatypes.insert(std::pair<unsigned int, data_type>(a ,std::make_shared<trie_node<char>>(++this->count_)));
 }

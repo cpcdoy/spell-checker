@@ -7,7 +7,7 @@
 
 int main(int argc, char** argv)
 {
-  trie<char, word_data> trie(4);
+  trie<char, word_data> tri(4);
 
   io_handler<word_data> io;
   io.open_file(argv[1]);
@@ -15,11 +15,15 @@ int main(int argc, char** argv)
   {
     word_data line;
     io >> line;
-    trie.insert(line.word, line);
+    tri.insert(line.word, line);
   }
-  auto res = trie.search("chadi");
+   std::vector<res_data> vv;
+  std::vector<res_data>  v =  tri.search_dist(10, vv,tri.get_root(), "aa");
+  std::sort(v.begin(), v.end(), trie<char, word_data>::sort_res_data); 
+  for (auto it = v.begin() ; it != v.end(); ++it)
+    std::cout << "dist : " <<  it->dist << " Result : "<< it->data.word << " freq : " << it->data.freq <<std::endl;
 
-  std::cout << "Result : " << res.word << " with freq " << res.freq;
+//  std::cout << "Result : " << res.word << " with freq " << res.freq << std::endl;
 
   return 0;
 }
