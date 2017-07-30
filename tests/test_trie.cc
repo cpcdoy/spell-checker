@@ -35,7 +35,7 @@ unsigned int lev_dam_distop(std::string s1,  std::string s2)
 
 int main(int argc, char** argv)
 {
-  trie<char, word_data> trie(4);
+  trie<char, word_data> tri(4);
 
   io_handler<word_data> io;
   io.open_file(argv[1]);
@@ -43,13 +43,11 @@ int main(int argc, char** argv)
   {
     word_data line;
     io >> line;
-    trie.insert(line.word, line);
+    tri.insert(line.word, line);
   }
   std::vector<word_data>  vv;
-  std::cout << "hello" <<std::endl; 
-  std::vector<word_data>  v =  trie.search_dist(10, vv,trie.get_root(), "aa");
-  std::sort(v.begin(), v.end(), sort_res_data); 
-  for (auto it = v.begin() ; it != v.end(); ++it)
-    std::cout << it->word <<std::endl;
+  std::vector<word_data>  v =  tri.search_dist(10, vv,tri.get_root(), "aa");
+  std::sort(v.begin(), v.end(),trie<char, word_data>::sort_res_data); 
+  tri.print(std::cout, v);
   return 0;
 }
