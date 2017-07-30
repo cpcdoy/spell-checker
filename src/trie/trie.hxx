@@ -17,6 +17,7 @@ trie(unsigned depth)
 
   //this->words_datatypes.insert(std::pair<unsigned int, data_type>(a ,std::make_shared<trie_node<char>>(++this->count_)));
 }
+
 template<typename key_type, typename data_type>
 trie_node_ptr<key_type>
 trie<key_type, data_type>::
@@ -33,6 +34,7 @@ search(std::string word)
   std::cout << "not defined yet" <<std::endl;
   return data_type();
 }
+
 template<>
 word_data
 trie<char, word_data>::
@@ -71,8 +73,8 @@ search(std::string word)
     }
     return {"not found", 0};
   }
-
 }
+
 template<typename key_type, typename data_type>
 template<typename T>
 std::vector<T> & 
@@ -81,6 +83,22 @@ search_dist(int dist, std::vector<T> &v, trie_node_ptr<key_type> cur_node,std::s
 {
   return std::vector<T>();
 }
+
+template<typename key_type, typename data_type>
+bool
+trie<key_type, data_type>::
+sort_res_data(const res_data& lhs, const res_data& rhs)
+{
+  if (lhs.dist != rhs.dist)
+    return lhs.dist < rhs.dist;
+
+  else if (lhs.data.freq != rhs.data.freq)
+    return lhs.data.freq > rhs.data.freq;
+
+  else if (lhs.data.word != rhs.data.word)
+    return lhs.data.word < rhs.data.word;
+}
+
 template<>
 template<>
 std::vector<res_data> &
@@ -135,12 +153,14 @@ search_dist(int dist, std::vector<res_data> &v,trie_node_ptr<char> cur_node,std:
     return v;
   }
 }
+
 template<typename key_type, typename data_type>
 void
 trie<key_type, data_type>::
 insert(std::string word, data_type data)
 {
 }
+
 template<>
 void
 trie<char, word_data>::
@@ -176,6 +196,7 @@ insert(std::string word, word_data data)
     dict.close();
   }
 }
+
 template<typename key_type, typename data_type>
 unsigned int
 trie<key_type, data_type>::
