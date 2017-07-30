@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(spell-checker)
 
-find_package(Boost 1.58.0 COMPONENTS serialization REQUIRED)
+find_package(Boost 1.58.0 COMPONENTS system serialization REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS}) 
 
@@ -28,12 +28,14 @@ IF(CMAKE_BUILD_TYPE MATCHES Release)
   add_executable(TextMiningCompiler_pass1 src/test_trie.cc
      $<TARGET_OBJECTS:trie>
      $<TARGET_OBJECTS:utils>)
+  target_link_libraries(TextMiningCompiler_pass1 ${Boost_LIBRARIES})
 
   add_executable(TextMiningCompiler src/test_trie.cc
     $<TARGET_OBJECTS:trie>
     $<TARGET_OBJECTS:utils>)
+  set_target_properties(TextMiningCompiler PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS}  -fprofile-use -pedantic -march=native -Ofast -frename-registers -funroll-loops -flto -pg")
+  target_link_libraries(TextMiningCompiler ${Boost_LIBRARIES})
 
-  set_target_properties(TextMiningCompiler PROPERTIES COMPILE_FLAGS "${CMAKE_CXX_FLAGS}  -fprofile-use")
 
   add_custom_target(TextMiningCompiler_pass2
     COMMAND time ./TextMiningCompiler_pass1 "subject/words.txt"
@@ -49,9 +51,11 @@ IF(CMAKE_BUILD_TYPE MATCHES Debug)
   add_executable(TextMiningCompiler src/test_trie.cc
      $<TARGET_OBJECTS:trie>
      $<TARGET_OBJECTS:utils>)
+  target_link_libraries(TextMiningCompiler ${Boost_LIBRARIES})
  ENDIF(CMAKE_BUILD_TYPE MATCHES Debug)
 
 add_custom_target(deep_clean
   COMMAND find . -iwholename '*cmake*' -not -name CMakeLists.txt -not -name cmake_deps -not -name '*Find*' -delete
   COMMAND find . -iwholename '*Makefile*' -delete
+  COMMAND find . -iwholename 'TextMiningCompiler*' -delete
 )

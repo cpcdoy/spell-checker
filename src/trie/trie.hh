@@ -7,6 +7,10 @@
 # include <numeric>
 # include <sys/stat.h>
 
+# include <boost/serialization/base_object.hpp>
+# include <boost/serialization/shared_ptr.hpp>
+# include <boost/serialization/map.hpp>
+
 # include "trie_node.hh"
 
 template<typename key_type, typename data_type>
@@ -29,6 +33,7 @@ class trie
 
     trie_node_ptr<key_type>
       get_root();
+    unsigned int count_;
   private:
     static bool sort_res_data(const res_data& lhs, const res_data& rhs);
 
@@ -36,6 +41,17 @@ class trie
     //std::map<key_type, trie_node_ptr<key_type>> childs_;
     std::map<unsigned int, data_type> words_datatypes; //unsigned int will be the id of the node
     unsigned int depth_;
-    unsigned int count_;
+
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+      (void)version;
+      ar & root_;
+      ar & words_datatypes;
+      ar & depth_;
+      ar & count_;
+    }
 };
+
 #include "trie.hxx"

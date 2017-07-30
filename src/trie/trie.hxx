@@ -43,7 +43,9 @@ search(std::string word)
   while ((cmp < this->depth_) && (cmp < word.size()))
   {
     if (sp->get_childs().count(word[cmp]))
+    {
       sp = sp->get_childs()[word[cmp]];
+    }
     else
       break;
     cmp ++;
@@ -96,7 +98,6 @@ sort_res_data(const res_data& lhs, const res_data& rhs)
   else if (lhs.data.word != rhs.data.word)
     return lhs.data.word < rhs.data.word;
 }
-
 
 template<>
 template<>
