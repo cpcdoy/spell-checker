@@ -1,26 +1,35 @@
-#include "types/types.hh"
-#include "dawg/dawg.hh"
-#include "trie/trie.hh"
-#include "utils/io.hh"
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+
+#include "../src/types/types.hh"
+#include "../src/dawg/dawg.hh"
+#include "../src/trie/trie.hh"
+#include "../src/utils/io.hh"
+
+#include <iostream>
+#include <typeinfo>
+#include <fstream>
 
 int main(int argc, char** argv)
 {
-  dawg<char, word_data> dawg;
-  trie<char, word_data> trie(4);
-  trie_node<char> node(3);
+  trie<char, word_data> trie1(4);
+
   io_handler<word_data> io;
-  io.open_file(argv[2]);
+  io.open_file(argv[1]);
   while (!io.is_finished())
   {
     word_data line;
     io >> line;
-    dawg.insert(line.word, line);
+    trie1.insert(line.word, line);
   }
 
-  dawg.close();
+  std::cout << "Serializing" << std::endl;
 
-  auto res = dawg.search(argv[1], 0);
-  std::cout << "Result : " << res.word << " with freq " << res.freq;
+  {
+    std::ofstream ofs("index", std::fstream::binary | std::fstream::out);
+    boost::archive::text_oarchive oa(ofs);
+    oa << trie1;
+  }
 
   return 0;
 }
