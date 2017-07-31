@@ -12,24 +12,35 @@
 
 int main(int argc, char** argv)
 {
-  trie<char, word_data> trie1(4);
-
-  io_handler<word_data> io;
-  io.open_file(argv[1]);
-  while (!io.is_finished())
+  if (argc > 2)
   {
-    word_data line;
-    io >> line;
-    trie1.insert(line.word, line);
-  }
+    std::string dic(argv[2]);
+    std::cerr << "Removing " + dic << std::endl;
+    std::string arg("rm -rf " + dic);
+    std::system(arg.c_str());
+    const int dir_err = mkdir(dic.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    std::cerr << "Creating " + dic << std::endl;
 
-  std::cout << "Serializing" << std::endl;
+    trie<char, word_data> trie1(4, argv[2]);
 
-  {
-    std::ofstream ofs("index", std::fstream::binary | std::fstream::out);
-    boost::archive::text_oarchive oa(ofs);
-    oa << trie1;
+    io_handler<word_data> io;
+    io.open_file(argv[1]);
+    while (!io.is_finished())
+    {
+      word_data line;
+      io >> line;
+      trie1.insert(line.word, line);
+    }
+    std::cerr << "Inserting " << argv[1] << std::endl;
+
+    {
+      std::ofstream ofs(dic + "/index", std::fstream::binary | std::fstream::out);
+      boost::archive::text_oarchive oa(ofs);
+      oa << trie1;
+    }
   }
+  else
+    std::cerr << "Example usage: ./TextMiningCompiler /path/to/words.txt /path/to/dict.bin" << std::endl;
 
   return 0;
 }

@@ -16,6 +16,13 @@ is_finished()
   return file.eof();
 }
 
+template<>
+bool
+io_handler<pipe_input_data>::
+is_finished()
+{
+  return finished;
+}
 
 template<typename data_type>
 io_handler<data_type>&
@@ -47,7 +54,6 @@ operator>>(word_data& data)
   for (it = line.begin(); it != line.end() && !isspace(*it); it++)
     word += *it;
 
-  std::transform(word.begin(), word.end(), word.begin(), ::tolower);
   data.word = word;
 
   std::string nb;
@@ -64,6 +70,49 @@ operator>>(word_data& data)
     data.freq = 0;
   }
   //std::cout << data.word << " " << data.freq << std::endl;
+
+  return *this;
+}
+
+template<>
+io_handler<pipe_input_data>&
+io_handler<pipe_input_data>::
+operator>>(pipe_input_data& data)
+{
+  std::string line;
+  if (!std::getline(std::cin, line))
+  {
+    finished = true;
+    data.word = "";
+    data.dist = -1;
+
+    return *this;
+  }
+
+  std::string::iterator it;
+
+  std::string dist;
+  for (it = line.begin() + 7; it != line.end() && isspace(*it); it++);
+
+  for (; it != line.end() && !isspace(*it); it++)
+    dist += *it;
+
+  std::string word;
+  for (; it != line.end(); it++)
+    if (!isspace(*it))
+      word += *it;
+
+  data.word = word;
+
+  try
+  {
+    data.dist = std::stol(dist, nullptr, 10);
+  }
+  catch (...)
+  {
+    data.dist = -1;
+  }
+  //std::cout << "word " <<  data.word << "----" << data.dist << std::endl;
 
   return *this;
 }

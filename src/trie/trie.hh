@@ -36,6 +36,7 @@ class trie
       get_root();
     static bool sort_res_data(const res_data& lhs, const res_data& rhs);
   private:
+    std::string dic;
     unsigned int count_;
 
     trie_node_ptr<key_type> root_;
@@ -48,6 +49,7 @@ class trie
     void serialize(Archive & ar, const unsigned int version)
     {
       (void)version;
+      ar & dic;
       ar & root_;
       ar & words_datatypes;
       ar & depth_;

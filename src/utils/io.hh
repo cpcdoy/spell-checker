@@ -16,6 +16,8 @@ class io_handler
 
   private:
     std::ifstream file;
+
+    bool finished = false;
 };
 
 # include "io.hxx"

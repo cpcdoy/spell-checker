@@ -20,6 +20,12 @@ struct word_data
     }
 };
 
+struct pipe_input_data
+{
+  std::string word;
+  int dist;
+};
+
 struct res_data
 {
   struct word_data data;
