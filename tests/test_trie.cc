@@ -61,9 +61,10 @@ unsigned int lev_dam_dist(std::string s1,  std::string s2)
 
 int main(int argc, char** argv)
 {
-  trie<char, word_data> tri(4);
+  /*trie<char, word_data> tri(4);
   io_handler<word_data> io;
   io.open_file(argv[1]);
+  
   while (!io.is_finished())
   {
     word_data line;
@@ -71,11 +72,11 @@ int main(int argc, char** argv)
     tri.insert(line.word, line);
   }
   std::vector<res_data>  vv;
-  std::vector<res_data>  v =  tri.search_dist(4, vv,tri.get_root(), "testing");
+  std::vector<res_data>  v =  tri.search_dist(2, vv,tri.get_root(), "testing");
   std::sort(v.begin(), v.end(),trie<char, word_data>::sort_res_data); 
   tri.print(std::cout, v);
-  
-  //std::cout << lev_dam_dist("testing", "testing") <<std::endl;
+ */
+  std::cout << lev_dam_dist("Bonjour", "Bojnour") <<std::endl;
   //std::cout << editdist("pantera","aorta",7,5) <<std::endl;
   return 0;
 }

@@ -214,9 +214,16 @@ lev_dam_dist(std::string s1,  std::string s2)
     for (int j = 1; j <= size2; j ++)
     {      
       cost = (s1[i - 1] == s2[j - 1]) ? 0 : 1 ;
-      d[i][j] = std::min(std::min(d[i][j -1] + 1, d[i - 1][j] + 1), d[i - 1][j - 1] + cost);
       if ( (i > 1) && (j > 1) && (s1[i] == s2[j - 1]) && (s1[i - 1] == s2[j]))
-        d[i][j] = std::min(d[i][j], d[i - 2][j - 2] + cost);
+      {
+        size_t a = std::min(d[i - 1][j], d[i][j - 1] + 1);
+        size_t b = std::min(d[i][j] + cost, d[i - 2][j - 2]);
+        d[i][j] = std::min(a, b);
+      }
+      else
+      {
+        d[i][j] = std::min(std::min(d[i][j -1] + 1, d[i - 1][j] + 1), d[i - 1][j - 1] + cost);
+      }
     }
   return d[size1][size2];
 }
