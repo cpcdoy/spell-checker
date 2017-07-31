@@ -92,3 +92,8 @@ add_custom_target(doc
   WORKING_DIRECTORY src
   COMMAND doxygen ../Doxyfile
 )
+
+add_custom_target(check
+  WORKING_DIRECTORY .
+  COMMAND python3 test.py
+)
