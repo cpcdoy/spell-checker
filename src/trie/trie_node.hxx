@@ -11,6 +11,7 @@ trie_node(unsigned int id)
 {
   this->id_ = id;
   this->final_node_ = false;
+  this->has_child_ = false;
   this->childs_ = std::map<key_type, trie_node_ptr<key_type>>();
 }
 

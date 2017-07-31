@@ -26,8 +26,10 @@ trie<key_type, data_type>::
 print(std::ostream& out, std::vector<res_data> &v)
 {
   out <<"[";
-  for (auto it = v.begin() ; it != v.end(); ++it)
-    out<<"{\"word\":" << it->data.word << ",\"freq\":"<<it->data.freq << ",\"distance\":"<<it->dist<<"}";
+  for (auto it = v.begin() ; it != (v.end() - 1); ++it)
+    out<<"{\"word\":" << it->data.word << ",\"freq\":"<<it->data.freq << ",\"distance\":"<<it->dist<<"},";
+  auto it = (v.end() - 1);
+  out<<"{\"word\":" << it->data.word << ",\"freq\":"<<it->data.freq << ",\"distance\":"<<it->dist<<"}";
   out <<"]" <<std::endl;
 }
 template<typename key_type, typename data_type>
@@ -118,7 +120,7 @@ search_dist(int dist, std::vector<res_data> &v,trie_node_ptr<char> cur_node,std:
       v.push_back({d, 0});
     return v;
   }
-  if (tmp.size() <= this->depth_)
+  if (tmp.size() < this->depth_)
   {
     if ((cur_node->get_final_node()) && ((cal_dis = lev_dam_dist(this->words_datatypes[cur_node->get_id()].word, word)) <= dist))
       v.push_back({this->words_datatypes[cur_node->get_id()], cal_dis});
@@ -133,6 +135,10 @@ search_dist(int dist, std::vector<res_data> &v,trie_node_ptr<char> cur_node,std:
   }
   else
   {
+    if ((cur_node->get_final_node()) && ((cal_dis = lev_dam_dist(this->words_datatypes[cur_node->get_id()].word, word)) <= dist))
+      v.push_back({this->words_datatypes[cur_node->get_id()], cal_dis});
+    if (! cur_node->has_child_)
+      return v;
     io_handler<word_data> io;
     io.open_file(dic  + std::to_string(cur_node->get_id()));
     while (!io.is_finished())
@@ -183,6 +189,7 @@ insert(std::string word, word_data data)
   }
   else
   {
+    sp->has_child_ = true;
     std::ofstream dict;
     dict.open (dic  + std::to_string(sp->get_id()), std::ofstream::out | std::ofstream::app);
     dict << word.substr(cmp)  << " " <<  data.freq << std::endl; //have to write data_type instead of word
