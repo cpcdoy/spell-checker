@@ -33,10 +33,6 @@ int main(int argc, char** argv)
       }
     }
 
-    auto m = trie_2.words_datatypes;
-    for (auto i = m.begin(); i != m.end(); i++)
-      std::cout << i->second.word << std::endl;
-
     io_handler<pipe_input_data> pipe_io;
     while (!pipe_io.is_finished())
     {
