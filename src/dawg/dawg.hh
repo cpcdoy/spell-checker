@@ -8,6 +8,10 @@
 
 # include "dawg_node.hh"
 
+
+/** 
+ * @brief Unused Directed Acyclic Word Graph (was used in a previous version)
+ */
 template<typename key_type, typename data_type>
 class dawg
 {

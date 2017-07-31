@@ -10,6 +10,14 @@
 #include <typeinfo>
 #include <fstream>
 
+/** 
+ * @brief TextMiningCompiler entry point (main)
+ * 
+ * @param argc
+ * @param argv
+ * 
+ * @return
+ */
 int main(int argc, char** argv)
 {
   if (argc > 2)

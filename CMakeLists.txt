@@ -33,7 +33,7 @@ IF(CMAKE_BUILD_TYPE MATCHES Release)
   target_link_libraries(TextMiningCompiler ${Boost_LIBRARIES})
 
   add_custom_target(TextMiningCompiler_pass2
-    COMMAND time ./TextMiningCompiler_pass1 "subject/words.txt"
+    COMMAND time ./TextMiningCompiler_pass1 "subject/words.txt" "dict.bin"
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMENT "Profiling the TextMiningCompiler"
   )
@@ -51,7 +51,7 @@ IF(CMAKE_BUILD_TYPE MATCHES Release)
   target_link_libraries(TextMiningApp ${Boost_LIBRARIES})
 
   add_custom_target(TextMiningApp_pass2
-    COMMAND time ./TextMiningApp_pass1 "subject/words.txt"
+    COMMAND time echo "approx 0 test" | ./TextMiningApp_pass1 "dict.bin"
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMENT "Profiling the TextMiningCompiler"
   )
@@ -85,4 +85,10 @@ add_custom_target(deep_clean
   COMMAND find . -iwholename '*cmake*' -not -name CMakeLists.txt -not -name cmake_deps -not -name '*Find*' -delete
   COMMAND find . -iwholename '*Makefile*' -delete
   COMMAND find . -iwholename '*TextMining*' -delete
+  COMMAND rm -rf doc/
+)
+
+add_custom_target(doc
+  WORKING_DIRECTORY src
+  COMMAND doxygen ../Doxyfile
 )

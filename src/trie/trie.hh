@@ -13,6 +13,29 @@
 
 # include "trie_node.hh"
 
+/*! \mainpage TextMining project
+ **
+ ** \section intro_sec Introduction
+ ** This projects aims at doing high performance fuzzy search in large data-sets using custom data structure.
+ ** This projects implements a hybrid Trie (previously a DAWG), which is written on RAM and Disk depending on usage
+ ** 
+ ** In the end the TextMiningCompiler compiles the whole trie on disk in a file and the TextMiningApp can use that index file to do a fast fuzzy search.
+ ** \section install_sec Installation
+ ** \subsection Release
+ **  \code{cmake}
+ ** cmake -DCMAKE_BUILD_TYPE=Release .
+ ** make
+ **\endcode
+ ** \subsection Debug
+ **  \code{cmake}
+ ** cmake -DCMAKE_BUILD_TYPE=Debug .
+ ** make
+ **\endcode
+ **/
+
+/** 
+ * @brief The main trie's structure
+ */
 template<typename key_type, typename data_type>
 class trie
 {
@@ -35,13 +58,13 @@ class trie
     trie_node_ptr<key_type>
       get_root();
     static bool sort_res_data(const res_data& lhs, const res_data& rhs);
+    std::map<unsigned int, data_type> words_datatypes; //unsigned int will be the id of the node
   private:
     std::string dic;
     unsigned int count_;
 
     trie_node_ptr<key_type> root_;
     //std::map<key_type, trie_node_ptr<key_type>> childs_;
-    std::map<unsigned int, data_type> words_datatypes; //unsigned int will be the id of the node
     unsigned int depth_;
 
     friend class boost::serialization::access;

@@ -8,6 +8,10 @@
 # include <boost/serialization/shared_ptr.hpp>
 # include <boost/serialization/map.hpp>
 
+
+/** 
+ * @brief Contains a trie's node
+ */
 template<typename key_type>
 class trie_node
 {

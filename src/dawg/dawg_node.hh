@@ -4,6 +4,9 @@
 #include <map>
 #include <memory>
 
+/** 
+ * @brief Unused Directed Acyclic Word Graph's node (was used in a previous version)
+ */
 template<typename node_type>
 class dawg_node
 {
