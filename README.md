@@ -25,6 +25,12 @@ cmake .
 make
 ```
 
+### Doxygen
+
+```sh
+make doc
+```
+
 ## Dependencies
 
 Boost 1.58.0 is used and its serialization module, to enable seamless serialiaztion of any data structure.
