@@ -27,9 +27,9 @@ print(std::ostream& out, std::vector<res_data> &v)
 {
   out <<"[";
   for (auto it = v.begin() ; it != (v.end() - 1); ++it)
-    out<<"{\"word\":\"" << it->data.word << "\",\"freq\":"<<it->data.freq << ",\"distance\":"<<it->dist<<"},";
+    out<<"{\"word\":" << it->data.word << ",\"freq\":"<<it->data.freq << ",\"distance\":"<<it->dist<<"},";
   auto it = (v.end() - 1);
-  out<<"{\"word\":\"" << it->data.word << "\",\"freq\":"<<it->data.freq << ",\"distance\":"<<it->dist<<"}";
+  out<<"{\"word\":" << it->data.word << ",\"freq\":"<<it->data.freq << ",\"distance\":"<<it->dist<<"}";
   out <<"]" <<std::endl;
 }
 template<typename key_type, typename data_type>
@@ -213,17 +213,15 @@ lev_dam_dist(std::string s1,  std::string s2)
   for (int i = 1; i <= size1; i ++)
     for (int j = 1; j <= size2; j ++)
     {      
-      cost = (s1[i] == s2[j]) ? 0 : 1 ;
-      if ( (i > 1) && (j > 1) && (s1[i] == s2[j - 1]) && (s1[i - 1] == s2[j]))
+      cost = (s1[i - 1] == s2[j - 1]) ? 0 : 1 ;
+      size_t a = std::min(d[i - 1][j] + 1, d[i][j - 1] + 1);
+      size_t b = std::min(d[i - 1 ][j - 1] + cost, a);
+      d[i][j] = std::min(a, b);
+      if ( (i > 1) && (j > 1) && (s1[i - 1] == s2[j - 2]) && (s1[i - 2] == s2[j - 1]))
       {
-        size_t a = std::min(d[i - 1][j] + 1, d[i][j - 1] + 1);
-        size_t b = std::min(d[i - 1][j - 1] + cost, d[i - 2][j - 2] + 1);
-        d[i][j] = std::min(a, b);
-      }
-      else
-      {
-        d[i][j] = std::min(std::min(d[i][j -1] + 1, d[i - 1][j] + 1), d[i - 1][j - 1] + cost);
+        d[i][j] = std::min(d[i][j], d[i -2][j - 2] + cost);
       }
     }
   return d[size1][size2];
 }
+
