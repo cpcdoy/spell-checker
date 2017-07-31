@@ -11,9 +11,9 @@ trie(unsigned depth, std::string dic)
   this->count_ = 0;
   this->root_ = std::make_shared<trie_node<key_type>>(0);
 
-  std::string arg("rm -rf " + dic);
-  std::system(arg.c_str());
-  const int dir_err = mkdir(dic.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+//  std::string arg("rm -rf " + dic);
+  //std::system(arg.c_str());
+  //const int dir_err = mkdir(dic.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
   /*if (-1 == dir_err)
   {
     std::rmdir(dic);
@@ -89,7 +89,6 @@ search(std::string word)
     }
     return {"not found", 0};
   }
-
 }
 template<typename key_type, typename data_type>
 template<typename T>
@@ -139,7 +138,7 @@ search_dist(int dist, std::vector<res_data> &v,trie_node_ptr<char> cur_node,std:
      v.push_back(this->words_datatypes[cur_node->get_id()]);
      return v;
      }*/
-  if (tmp.size() < this->depth_)
+  if (tmp.size() <= this->depth_)
   {
     if ((cur_node->get_final_node()) && ((cal_dis = lev_dam_dist(this->words_datatypes[cur_node->get_id()].word, word)) <= dist))
       v.push_back({this->words_datatypes[cur_node->get_id()], cal_dis});
@@ -185,7 +184,7 @@ insert(std::string word, word_data data)
   auto sp =  this->root_;
   unsigned int cmp = 0;
 
-  while((cmp < word.size() - 1) && (cmp < this->depth_))
+  while((cmp < word.size() /*- 1*/) && (cmp < this->depth_))
   {
     char a = word[cmp];
     typename std::map<char, trie_node_ptr<char>>::iterator it = sp->get_childs().find(a);
@@ -206,7 +205,7 @@ insert(std::string word, word_data data)
   {
     std::ofstream dict;
     dict.open ("dic/" + std::to_string(sp->get_id()), std::ofstream::out | std::ofstream::app);
-    dict << word.substr(cmp  )  << " " <<  data.freq << std::endl; //have to write data_type instead of word
+    dict << word.substr(cmp)  << " " <<  data.freq << std::endl; //have to write data_type instead of word
     dict.close();
   }
 }
@@ -227,7 +226,7 @@ lev_dam_dist(std::string s1,  std::string s2)
   for (int i = 1; i <= size1; i ++)
     for (int j = 1; j <= size2; j ++)
     {      
-      cost = (s1[i] == s2[j]) ? 0 : 1 ;
+      cost = (s1[i - 1] == s2[j - 1]) ? 0 : 1 ;
       d[i][j] = std::min(std::min(d[i][j -1] + 1, d[i - 1][j] + 1), d[i - 1][j - 1] + cost);
       if ( (i > 1) && (j > 1) && (s1[i] == s2[j - 1]) && (s1[i - 1] == s2[j]))
         d[i][j] = std::min(d[i][j], d[i - 2][j - 2] + cost);
