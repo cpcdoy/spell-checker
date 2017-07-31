@@ -44,16 +44,13 @@ unsigned int lev_dam_dist(std::string s1,  std::string s2)
   for (int i = 1; i <= size1; i ++)
     for (int j = 1; j <= size2; j ++)
     {      
-      cost = (s1[i] == s2[j]) ? 0 : 1 ;
-      if ( (i > 1) && (j > 1) && (s1[i] == s2[j - 1]) && (s1[i - 1] == s2[j]))
+      cost = (s1[i - 1] == s2[j - 1]) ? 0 : 1 ;
+      size_t a = std::min(d[i - 1][j] + 1, d[i][j - 1] + 1);
+      size_t b = std::min(d[i - 1 ][j - 1] + cost, a);
+      d[i][j] = std::min(a, b);
+      if ( (i > 1) && (j > 1) && (s1[i - 1] == s2[j - 2]) && (s1[i - 2] == s2[j - 1]))
       {
-        size_t a = std::min(d[i - 1][j] + 1, d[i][j - 1] + 1);
-        size_t b = std::min(d[i - 1][j - 1] + cost, d[i - 2][j - 2] + 1);
-        d[i][j] = std::min(a, b);
-      }
-      else
-      {
-        d[i][j] = std::min(std::min(d[i][j -1] + 1, d[i - 1][j] + 1), d[i - 1][j - 1] + cost);
+        d[i][j] = std::min(d[i][j], d[i -2][j - 2] + cost);
       }
     }
   return d[size1][size2];
@@ -62,21 +59,24 @@ unsigned int lev_dam_dist(std::string s1,  std::string s2)
 int main(int argc, char** argv)
 {
   /*trie<char, word_data> tri(4);
-  io_handler<word_data> io;
-  io.open_file(argv[1]);
-  
-  while (!io.is_finished())
-  {
+    io_handler<word_data> io;
+    io.open_file(argv[1]);
+
+    while (!io.is_finished())
+    {
     word_data line;
     io >> line;
     tri.insert(line.word, line);
-  }
-  std::vector<res_data>  vv;
-  std::vector<res_data>  v =  tri.search_dist(2, vv,tri.get_root(), "testing");
-  std::sort(v.begin(), v.end(),trie<char, word_data>::sort_res_data); 
-  tri.print(std::cout, v);
- */
+    }
+    std::vector<res_data>  vv;
+    std::vector<res_data>  v =  tri.search_dist(2, vv,tri.get_root(), "testing");
+    std::sort(v.begin(), v.end(),trie<char, word_data>::sort_res_data); 
+    tri.print(std::cout, v);
+    */
+  std::cout << lev_dam_dist("testing", "lestins") <<std::endl;
+  std::cout << lev_dam_dist("testing", "tsetong") <<std::endl;
   std::cout << lev_dam_dist("promotuning", "testing") <<std::endl;
+  std::cout << lev_dam_dist("test", "testing") <<std::endl;
   //std::cout << editdist("pantera","aorta",7,5) <<std::endl;
   return 0;
 }
