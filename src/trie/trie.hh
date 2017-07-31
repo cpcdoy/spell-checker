@@ -58,7 +58,6 @@ class trie
     trie_node_ptr<key_type>
       get_root();
     static bool sort_res_data(const res_data& lhs, const res_data& rhs);
-    std::map<unsigned int, data_type> words_datatypes; //unsigned int will be the id of the node
   private:
     std::string dic;
     unsigned int count_;
@@ -66,6 +65,7 @@ class trie
     trie_node_ptr<key_type> root_;
     //std::map<key_type, trie_node_ptr<key_type>> childs_;
     unsigned int depth_;
+    std::map<unsigned int, data_type> words_datatypes; //unsigned int will be the id of the node
 
     friend class boost::serialization::access;
     template<class Archive>

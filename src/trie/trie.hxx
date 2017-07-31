@@ -3,6 +3,14 @@
 #include "../types/types.hh"
 #include "../utils/io.hh"
 
+/** 
+ * @brief 
+ * 
+ * @param depth
+ * @param dic
+ * 
+ * @return 
+ */
 template<typename key_type, typename data_type>
 trie<key_type, data_type>::
 trie(unsigned depth, std::string dic)
@@ -13,6 +21,11 @@ trie(unsigned depth, std::string dic)
   this->dic = dic + "/";
 }
 
+/** 
+ * @brief 
+ * 
+ * @return 
+ */
 template<typename key_type, typename data_type>
 trie_node_ptr<key_type>
 trie<key_type, data_type>::
@@ -20,6 +33,15 @@ get_root()
 {
   return this->root_;
 }
+
+/** 
+ * @brief 
+ * 
+ * @param out
+ * @param v
+ * 
+ * @return 
+ */
 template<typename key_type, typename data_type>
 void
 trie<key_type, data_type>::
@@ -32,6 +54,14 @@ print(std::ostream& out, std::vector<res_data> &v)
   out<<"{\"word\":\"" << it->data.word << "\",\"freq\":"<<it->data.freq << ",\"distance\":"<<it->dist<<"}";
   out <<"]" <<std::endl;
 }
+
+/** 
+ * @brief 
+ * 
+ * @param word
+ * 
+ * @return 
+ */
 template<typename key_type, typename data_type>
 data_type
 trie<key_type, data_type>::
@@ -40,6 +70,14 @@ search(std::string word)
   std::cout << "not defined yet" <<std::endl;
   return data_type();
 }
+
+/** 
+ * @brief 
+ * 
+ * @param word
+ * 
+ * @return 
+ */
 template<>
 word_data
 trie<char, word_data>::
@@ -81,6 +119,18 @@ search(std::string word)
     return {"not found", 0};
   }
 }
+
+/** 
+ * @brief 
+ * 
+ * @param dist
+ * @param v
+ * @param cur_node
+ * @param word
+ * @param tmp
+ * 
+ * @return 
+ */
 template<typename key_type, typename data_type>
 template<typename T>
 std::vector<T> & 
@@ -105,6 +155,18 @@ sort_res_data(const res_data& lhs, const res_data& rhs)
     return lhs.data.word < rhs.data.word;
 }
 
+
+/** 
+ * @brief 
+ * 
+ * @param dist
+ * @param v
+ * @param cur_node
+ * @param word
+ * @param tmp
+ * 
+ * @return 
+ */
 template<>
 template<>
 std::vector<res_data> &
@@ -154,12 +216,32 @@ search_dist(int dist, std::vector<res_data> &v,trie_node_ptr<char> cur_node,std:
     return v;
   }
 }
+
+
+/** 
+ * @brief 
+ * 
+ * @param word
+ * @param data
+ * 
+ * @return 
+ */
 template<typename key_type, typename data_type>
 void
 trie<key_type, data_type>::
 insert(std::string word, data_type data)
 {
 }
+
+
+/** 
+ * @brief 
+ * 
+ * @param word
+ * @param data
+ * 
+ * @return 
+ */
 template<>
 void
 trie<char, word_data>::
@@ -196,6 +278,15 @@ insert(std::string word, word_data data)
     dict.close();
   }
 }
+
+/** 
+ * @brief 
+ * 
+ * @param s1
+ * @param s2
+ * 
+ * @return 
+ */
 template<typename key_type, typename data_type>
 unsigned int
 trie<key_type, data_type>::

@@ -51,7 +51,7 @@ IF(CMAKE_BUILD_TYPE MATCHES Release)
   target_link_libraries(TextMiningApp ${Boost_LIBRARIES})
 
   add_custom_target(TextMiningApp_pass2
-    COMMAND time echo "approx 0 test" | ./TextMiningApp_pass1 "dict.bin"
+    COMMAND time echo "approx 2 testing" | ./TextMiningApp_pass1 "dict.bin"
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMENT "Profiling the TextMiningCompiler"
   )
