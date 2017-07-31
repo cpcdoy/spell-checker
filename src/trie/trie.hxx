@@ -125,7 +125,7 @@ search_dist(int dist, std::vector<res_data> &v,trie_node_ptr<char> cur_node,std:
     if ((cur_node->get_final_node()) && ((cal_dis = lev_dam_dist(this->words_datatypes[cur_node->get_id()].word, word)) <= dist))
       v.push_back({this->words_datatypes[cur_node->get_id()], cal_dis});
     if (!cur_node->get_childs().empty())
-      for(std::map<char, trie_node_ptr<char>>::iterator iter = cur_node->get_childs().begin(); iter != cur_node->get_childs().end(); ++iter)
+      for(auto iter = cur_node->get_childs().begin(); iter != cur_node->get_childs().end(); ++iter)
       {
         char a = iter->first;
         std::string tmp2(tmp + a);
@@ -173,7 +173,7 @@ insert(std::string word, word_data data)
   while((cmp < word.size() /*- 1*/) && (cmp < this->depth_))
   {
     char a = word[cmp];
-    typename std::map<char, trie_node_ptr<char>>::iterator it = sp->get_childs().find(a);
+    auto it = sp->get_childs().find(a);
     if (!sp->get_childs().count(a))
       //if (it == sp->get_childs().end())
     {

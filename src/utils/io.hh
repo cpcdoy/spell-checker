@@ -4,6 +4,10 @@
 # include <ctype.h>
 # include <fstream>
 
+/** 
+ * @brief Io_andler handles io using nice "<<"/">>" operators overloading
+ * 
+ **/
 template<typename data_type>
 class io_handler
 {
