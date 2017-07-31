@@ -55,8 +55,8 @@ search(std::string word)
       break;
     cmp ++;
   }
-  if (cmp < this->depth_) 
-    if ((sp->get_final_node() == true) && (cmp == word.size() - 1))
+  if (cmp <= this->depth_) 
+    if ((sp->get_final_node() == true))
     {
       return this->words_datatypes[sp->get_id()];
     }
@@ -65,7 +65,7 @@ search(std::string word)
   else
   {
     io_handler<word_data> io;
-    io.open_file(dic + std::to_string(sp->get_id()));
+    io.open_file(dic  + std::to_string(sp->get_id()));
     while (!io.is_finished())
     {
       word_data line;
@@ -118,15 +118,6 @@ search_dist(int dist, std::vector<res_data> &v,trie_node_ptr<char> cur_node,std:
       v.push_back({d, 0});
     return v;
   }
-  /*
-     if ((tmp.size() < this->depth_) && ((cur_node->get_childs().empty()) 
-     || ((lev_dam_dist(tmp, word) > dist) 
-     && (std::abs(int (tmp.size() - word.size())) > word.size()))))
-     {
-     if ((cur_node->get_final_node()) && (lev_dam_dist(this->words_datatypes[cur_node->get_id()].word, word) <= dist))
-     v.push_back(this->words_datatypes[cur_node->get_id()]);
-     return v;
-     }*/
   if (tmp.size() <= this->depth_)
   {
     if ((cur_node->get_final_node()) && ((cal_dis = lev_dam_dist(this->words_datatypes[cur_node->get_id()].word, word)) <= dist))
@@ -143,7 +134,7 @@ search_dist(int dist, std::vector<res_data> &v,trie_node_ptr<char> cur_node,std:
   else
   {
     io_handler<word_data> io;
-    io.open_file(dic + std::to_string(cur_node->get_id()));
+    io.open_file(dic  + std::to_string(cur_node->get_id()));
     while (!io.is_finished())
     {
       word_data line;
@@ -185,7 +176,7 @@ insert(std::string word, word_data data)
     sp = sp->get_childs()[a];
     cmp++;
   }
-  if (cmp < this->depth_)
+  if ((cmp < this->depth_) || ((cmp == this->depth_) && (cmp == word.size())))
   {
     sp->set_final_node(true);
     this->words_datatypes[sp->get_id()] = data;
@@ -193,7 +184,7 @@ insert(std::string word, word_data data)
   else
   {
     std::ofstream dict;
-    dict.open (dic + std::to_string(sp->get_id()), std::ofstream::out | std::ofstream::app);
+    dict.open (dic  + std::to_string(sp->get_id()), std::ofstream::out | std::ofstream::app);
     dict << word.substr(cmp)  << " " <<  data.freq << std::endl; //have to write data_type instead of word
     dict.close();
   }
