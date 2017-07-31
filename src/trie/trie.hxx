@@ -27,9 +27,9 @@ print(std::ostream& out, std::vector<res_data> &v)
 {
   out <<"[";
   for (auto it = v.begin() ; it != (v.end() - 1); ++it)
-    out<<"{\"word\":" << it->data.word << ",\"freq\":"<<it->data.freq << ",\"distance\":"<<it->dist<<"},";
+    out<<"{\"word\":\"" << it->data.word << "\",\"freq\":"<<it->data.freq << ",\"distance\":"<<it->dist<<"},";
   auto it = (v.end() - 1);
-  out<<"{\"word\":" << it->data.word << ",\"freq\":"<<it->data.freq << ",\"distance\":"<<it->dist<<"}";
+  out<<"{\"word\":\"" << it->data.word << "\",\"freq\":"<<it->data.freq << ",\"distance\":"<<it->dist<<"}";
   out <<"]" <<std::endl;
 }
 template<typename key_type, typename data_type>

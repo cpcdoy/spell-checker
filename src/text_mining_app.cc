@@ -44,7 +44,7 @@ int main(int argc, char** argv)
         std::vector<res_data> vv;
         std::vector<res_data>  v = trie_2.search_dist(line.dist, vv, trie_2.get_root(), line.word);
         std::sort(v.begin(), v.end(), trie<char, word_data>::sort_res_data); 
-        trie_2.print(std::cout, vv);
+        trie_2.print(std::cout, v);
       }
     }
   }
