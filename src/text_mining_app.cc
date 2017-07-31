@@ -12,28 +12,34 @@
 
 int main(int argc, char** argv)
 {
-  trie<char, word_data> trie_2(4);
+  if (argc > 1)
   {
-    std::ifstream ifs("index", std::fstream::binary | std::fstream::in);
-    if (ifs.good())
+    std::string dic(argv[1]);
+    trie<char, word_data> trie_2(4);
     {
-      boost::archive::text_iarchive ia(ifs);
-      ia >> trie_2;
+      std::ifstream ifs(dic + "/index", std::fstream::binary | std::fstream::in);
+      if (ifs.good())
+      {
+        boost::archive::text_iarchive ia(ifs);
+        ia >> trie_2;
+      }
+    }
+
+    io_handler<pipe_input_data> pipe_io;
+    while (!pipe_io.is_finished())
+    {
+      pipe_input_data line;
+      pipe_io >> line;
+
+      if (line.dist != -1)
+      {
+        std::vector<res_data> vv;
+        std::vector<res_data>  v = trie_2.search_dist(line.dist, vv, trie_2.get_root(), line.word);
+        std::sort(v.begin(), v.end(), trie<char, word_data>::sort_res_data); 
+        trie_2.print(std::cout, vv);
+      }
     }
   }
-
-  auto res = trie_2.search("chadi");
-
-  std::cout << "Result with deserialized trie : " << res.word << " with freq " << res.freq;
-
-  /*std::vector<res_data> vv;
-    std::vector<res_data>  v =  tri.search_dist(10, vv,tri.get_root(), "aa");
-    std::sort(v.begin(), v.end(), trie<char, word_data>::sort_res_data); 
-    for (auto it = v.begin() ; it != v.end(); ++it)
-    std::cout << "dist : " <<  it->dist << " Result : "<< it->data.word << " freq : " << it->data.freq <<std::endl;
-
-  //  std::cout << "Result : " << res.word << " with freq " << res.freq << std::endl;
-  */
 
   return 0;
 }

@@ -10,20 +10,9 @@ trie(unsigned depth, std::string dic)
   this->depth_ = depth;
   this->count_ = 0;
   this->root_ = std::make_shared<trie_node<key_type>>(0);
-
-//  std::string arg("rm -rf " + dic);
-  //std::system(arg.c_str());
-  //const int dir_err = mkdir(dic.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-  /*if (-1 == dir_err)
-  {
-    std::rmdir(dic);
-    std::system(arg.c_str());
-    std::cerr << "Error creating directory!" << std::endl;
-
-  } */ 
-
-  //this->words_datatypes.insert(std::pair<unsigned int, data_type>(a ,std::make_shared<trie_node<char>>(++this->count_)));
+  this->dic = dic + "/";
 }
+
 template<typename key_type, typename data_type>
 trie_node_ptr<key_type>
 trie<key_type, data_type>::
@@ -76,7 +65,7 @@ search(std::string word)
   else
   {
     io_handler<word_data> io;
-    io.open_file("dic/" + std::to_string(sp->get_id()));
+    io.open_file(dic + std::to_string(sp->get_id()));
     while (!io.is_finished())
     {
       word_data line;
@@ -154,7 +143,7 @@ search_dist(int dist, std::vector<res_data> &v,trie_node_ptr<char> cur_node,std:
   else
   {
     io_handler<word_data> io;
-    io.open_file("dic/" + std::to_string(cur_node->get_id()));
+    io.open_file(dic + std::to_string(cur_node->get_id()));
     while (!io.is_finished())
     {
       word_data line;
@@ -204,7 +193,7 @@ insert(std::string word, word_data data)
   else
   {
     std::ofstream dict;
-    dict.open ("dic/" + std::to_string(sp->get_id()), std::ofstream::out | std::ofstream::app);
+    dict.open (dic + std::to_string(sp->get_id()), std::ofstream::out | std::ofstream::app);
     dict << word.substr(cmp)  << " " <<  data.freq << std::endl; //have to write data_type instead of word
     dict.close();
   }
