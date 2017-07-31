@@ -4,11 +4,13 @@
 #include "../utils/io.hh"
 
 /** 
- * @brief 
+ * @brief
+ * construcor of the classe
  * 
  * @param depth
+ * express the max depth of the trie
  * @param dic
- * 
+ * name folder where the words which have length > depth are written
  * @return 
  */
 template<typename key_type, typename data_type>
@@ -23,6 +25,7 @@ trie(unsigned depth, std::string dic)
 
 /** 
  * @brief 
+ *
  * 
  * @return 
  */
@@ -36,10 +39,12 @@ get_root()
 
 /** 
  * @brief 
- * 
+ * print in JSON format a result of search 
+ * stored in std::vector<res_data>
  * @param out
+ * output print
  * @param v
- * 
+ * vector to print of results
  * @return 
  */
 template<typename key_type, typename data_type>
@@ -57,9 +62,9 @@ print(std::ostream& out, std::vector<res_data> &v)
 
 /** 
  * @brief 
- * 
+ * function search for one word on the trie with distance  = 0
  * @param word
- * 
+ * the word searched
  * @return 
  */
 template<typename key_type, typename data_type>
@@ -73,9 +78,9 @@ search(std::string word)
 
 /** 
  * @brief 
- * 
+ * function search for one word on the trie with distance  = 0
  * @param word
- * 
+ * the word searched
  * @return 
  */
 template<>
@@ -121,14 +126,21 @@ search(std::string word)
 }
 
 /** 
- * @brief 
+ * @brief
+ * search a word with a distance and return 
+ * the result on a vector
  * 
  * @param dist
+ * express the distance you desire
  * @param v
+ * is the vector passed as a reference that will contain the valid result
  * @param cur_node
+ * in each level of recursion, the function should know on wich
+ * node, she is working
  * @param word
+ * the word that you are looking for
  * @param tmp
- * 
+ * is an accumulator, when you prob your tri it construct the according word
  * @return 
  */
 template<typename key_type, typename data_type>
@@ -157,14 +169,21 @@ sort_res_data(const res_data& lhs, const res_data& rhs)
 
 
 /** 
- * @brief 
+ * @brief
+ * search a word with a distance and return 
+ * the result on a vector
  * 
  * @param dist
+ * express the distance you desire
  * @param v
+ * is the vector passed as a reference that will contain the valid result
  * @param cur_node
+ * in each level of recursion, the function should know on wich
+ * node, she is working
  * @param word
+ * the word that you are looking for
  * @param tmp
- * 
+ * is an accumulator, when you prob your tri it construct the according word
  * @return 
  */
 template<>
@@ -219,13 +238,23 @@ search_dist(int dist, std::vector<res_data> &v,trie_node_ptr<char> cur_node,std:
 
 
 /** 
- * @brief 
+ * @brief
+ * search a word with a distance and return 
+ * the result on a vector
  * 
+ * @param dist
+ * express the distance you desire
+ * @param v
+ * is the vector passed as a reference that will contain the valid result
+ * @param cur_node
+ * in each level of recursion, the function should know on wich
+ * node, she is working
  * @param word
- * @param data
- * 
+ * the word that you are looking for
+ * @param tmp
+ * is an accumulator, when you prob your tri it construct the according word
  * @return 
- */
+**/
 template<typename key_type, typename data_type>
 void
 trie<key_type, data_type>::
@@ -236,9 +265,11 @@ insert(std::string word, data_type data)
 
 /** 
  * @brief 
- * 
+ *insert a word on the trie, in memory if it's length < depth else in disc 
  * @param word
+ * is the string we are trying to insert
  * @param data
+ * struct containing indormation about the string we are trying to insert
  * 
  * @return 
  */
@@ -281,9 +312,11 @@ insert(std::string word, word_data data)
 
 /** 
  * @brief 
- * 
+ * distance Damereau Leveinstein, calculate distance between 2 words s1, s2
  * @param s1
+ * word 1
  * @param s2
+ * word 2
  * 
  * @return 
  */
