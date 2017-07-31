@@ -23,9 +23,7 @@ def test(binTest, binRef, pathTest, pathRef):
      rr = subprocess.run(args = argsRef, stdin =std.stdout,  stdout=subprocess.PIPE)
      resTest = rt.stdout # other version resTest += rt.stdout
      resRef = rr.stdout  # other version resRef += rr.stdout
-     print(resTest)
-     print((resTest == resRef))
      note[i] = int(resTest == resRef)
-   print('your score is ', note.mean(), " on 100")
+   print('your score is ', note.sum(), " on 100")
 
 test("./TextMiningApp", "./TextMiningAppRef", "dic.bin", "dicRef.bin")

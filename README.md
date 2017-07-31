@@ -44,10 +44,15 @@ Finally, when using the TextMiningCompiler, we only compile the trie in RAM to d
 In the end, on disk, the Trie looks something like :
 
 -- dict.bin
+
 ---- 100
+
 ---- 1000
+
      .... <- skipped a lot here
+
 ---- 99999
+
 ---- index
 
 To serialize the "index" we use boost::serialize.
@@ -101,14 +106,18 @@ On the other hand, we have the trie nodes:
 - Final_node_ indicates that the current node is the end of a word. Still, that node can still have children. So this is not akin to a leaf.
 - has_child_ points out that that node, had children stored on disk. The current node's id gives the file to open, within the directory's name given by the user (e.g. dict.bin)
 
-## Fuzzy search
+
+##  Fuzzy search
+
 
 The architecture used here is the following :
 
 - For an exact search, we do a classical search by probing the Trie. But we do it in an iterative fashion.
 - For a fuzzy search, we probe the trie, and for each word, we use a Damerau-Levenshtein distance and if the word has a lower or equal distance, we add it to a vector. Finale, we output the result as a JSON object.
 
-## Possible optimizations
+
+##  Possible optimizations
+
 
 We already use GCC's (almost) maximum possible optimizations that is:
 
@@ -120,7 +129,9 @@ The thing is that we have heavy IO on disk usage, we need to be able to reduce t
 
 Also, we should serialize the Trie while creating it and not after. This avoids having to use boost::serialization which is heavy on cpu time.
 
-## Using methods closer to the state of the art
+
+##    Using methods closer to the state of the art
+
 
 We could have used another data structure, like a patricia trie, even though we do dump word suffixes on disk.
 
