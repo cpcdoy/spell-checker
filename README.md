@@ -25,6 +25,10 @@ cmake .
 make
 ```
 
+## Dependencies
+
+Boost 1.58.0 is used and its serialization module, to enable seamless serialiaztion of any data structure.
+
 ## Design
 
 The compiler was originally designed using a Directed Acyclic Word Graph (DAWG or MA-FSA), but the algorithm was found to use too much memory (> 1Go) and we had trouble merging some nodes.
@@ -45,6 +49,8 @@ In the end, on disk, the Trie looks something like :
      .... <- skipped a lot here
 ---- 99999
 ---- index
+
+To serialize the "index" we use boost::serialize.
 
 ## Tests
 
@@ -104,4 +110,20 @@ The architecture used here is the following :
 
 ## Possible optimizations
 
+We already use GCC's (almost) maximum possible optimizations that is:
 
+- Compile-time optimizations, with the following flags :"-march=native -Ofast -fprofile-generate -frename-registers -funroll-loops -pg"
+- Link-time optimizations : the "-flto" flag enables the use of the Link-time optimizer using gcc-ar
+- Run-time Profile-Guided optimizations : Using the flags "-fprofile-generate", gcc can inject code inside the program that enables it to localize hot spots within the execution at run-time. Knowing this, we can recompile the program using the flag "-fprofile-use" and gcc can optimize even more the program. So our programs are compiled in 2 passes each.
+
+The thing is that we have heavy IO on disk usage, we need to be able to reduce that to the maximum if we want way more performance in the future. Although, we only use ~40 Mb, which is pretty low.
+
+Also, we should serialize the Trie while creating it and not after. This avoids having to use boost::serialization which is heavy on cpu time.
+
+## Using methods closer to the state of the art
+
+We could have used another data structure, like a patricia trie, even though we do dump word suffixes on disk.
+
+Other optimizations include bloom filters, or even implementing a levenshtein automata for the fuzzy search.
+
+Further more, we could use sentences instead of words with frequencies, which will enable us to use particular structures like Hidden Markov Models and enable suggestions based on the word's type and on the language's type.
