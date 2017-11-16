@@ -13,17 +13,10 @@ This project is using the CMake build system.
 ### In-Source build
 
 ```sh
-cmake .
+cmake . -DCMAKE_BUILD_TYPE=Debug
 make
 ```
 
-### Out-of-source build
-
-```sh
-mkdir build && cd build
-cmake .
-make
-```
 
 ### Doxygen
 
